@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import CampaignForm from './components/CampaignForm';
+import CampaignList from './components/CampaignList';
 
 function App() {
   const [campaigns, setCampaigns] = useState([]);
@@ -23,6 +24,9 @@ function App() {
 
       {/* Formularz do tworzenia nowej kampanii */}
             <CampaignForm onAdd={addCampaign} />
+
+      {/* Lista istniejących kampanii */}
+      <CampaignList campaigns={campaigns} />
      </div>
     </>
   )
