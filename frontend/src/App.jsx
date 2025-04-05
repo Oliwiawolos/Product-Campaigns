@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './App.css'
+import './App.scss'; 
 import CampaignForm from './components/CampaignForm';
 import CampaignList from './components/CampaignList';
 
@@ -62,20 +62,20 @@ function App() {
 
   return (
     <div className="container">
-    <h1>Product Campaigns</h1>
-    <p><strong>Emerald Balance:</strong> {emeraldBalance}</p>
+      <h1>Product Campaigns</h1>
+      <p><strong>Emerald Balance:</strong> {emeraldBalance}</p>
 
-    { (emeraldBalance > 0 || editingIndex !== null) ?  (
-      <CampaignForm 
-        onAdd={addCampaign} 
-        onUpdate={updateCampaign}
-        editingIndex={editingIndex}
-        editingCampaign={editingIndex !== null ? campaigns[editingIndex] : null}
-      />
-    ) : (
-      <p>You have no more emeralds. You can’t create new campaigns right now.</p>
-    )}
-
+      { (emeraldBalance > 0 || editingIndex !== null) ?  (
+        <CampaignForm 
+          onAdd={addCampaign} 
+          onUpdate={updateCampaign}
+          editingIndex={editingIndex}
+          editingCampaign={editingIndex !== null ? campaigns[editingIndex] : null}
+        />
+      ) : (
+        <p>You have no more emeralds. You can't create new campaigns right now.</p>
+      )}
+    
     <CampaignList 
       campaigns={campaigns} 
       onEdit={editCampaign}
