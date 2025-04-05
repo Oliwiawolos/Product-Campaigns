@@ -1,9 +1,13 @@
-import {useState} from  'react';
+import {useState, useEffect} from  'react';
 import Select from 'react-select';
 
-//Komponent przekazuje dane kampanii do rodzica przez funkcję onAdd
-export default function CampaignForm({onAdd}){
-    const [formData, setFormData]=useState({
+export default function CampaignForm({
+    onAdd,
+    onUpdate,
+    editingIndex,
+    editingCampaign
+}) {
+    const defaultFormData = {
         name: '',
         keywords: [],
         bid: '',
@@ -11,30 +15,40 @@ export default function CampaignForm({onAdd}){
         status: '',
         town: '',
         radius: ''
-    });
+    };
 
-    //obsługa zmiany wartości pól formularza 
+    const [formData, setFormData] = useState(defaultFormData)
+    
+    useEffect(() => {
+        if (editingCampaign){
+            setFormData(editingCampaign);
+        } else {
+            setFormData(defaultFormData);
+        }
+    }, [editingCampaign]);
+
     const handleChange=(e)=>{
         setFormData({...formData, [e.target.name]: e.target.value});
     };
-
-    //obsługa wysłania formularza
-    const handleSubmit=(e)=>{
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
-        onAdd(formData);
-        setFormData({
-            name: '',
-            keywords: [],
-            bid: '',
-            fund: '',
-            status: '',
-            town: '',
-            radius: '',
-        });
+
+        let success;
+        if (editingIndex === null){
+            success = onAdd(formData);
+        } else {
+            success = onUpdate(formData);
+        }
+        if (success){
+            setFormData(defaultFormData);
+        }
     };
 
     //Przykładowe miasta 
-    const towns = ['Berlin', 'Warsaw', 'Paris', 'Oslo', 'Madrid', 'Riga','Stockholm','Prague','London', 'Rome'];
+    const towns = [
+        'Berlin', 'Warsaw', 'Paris', 'Oslo', 'Madrid', 'Riga','Stockholm','Prague','London', 'Rome'
+    ];
     
     //Przykładowe słowa kluczowe
     const keywordOptions = [
@@ -56,7 +70,14 @@ export default function CampaignForm({onAdd}){
 
     return (
         <form onSubmit={handleSubmit}>
-            <input name="name" value={formData.name} onChange={handleChange} placeholder="Campaign name" required />
+            <input 
+                name="name" 
+                value={formData.name} 
+                onChange={handleChange} 
+                placeholder="Campaign name" 
+                required 
+            />
+            
             <Select
                 isMulti
                 name="keywords"
@@ -65,23 +86,64 @@ export default function CampaignForm({onAdd}){
                     const values = selected.map(opt => opt.value);
                     setFormData({ ...formData, keywords: values });
                 }}
+                value={keywordOptions.filter((opt) => formData.keywords.includes(opt.value))}
                 placeholder="Select or type keywords"
             />
-            <input name="bid" type="number" min= "1" value={formData.bid} onChange={handleChange} placeholder="Bid" required />
-            <input name="fund" type="number" value={formData.fund} onChange={handleChange} placeholder="Campaign fund" required />
-            <select name="status" value={formData.status} onChange={handleChange} required >
+
+            <input 
+                name="bid" 
+                type="number" 
+                min= "1" 
+                value={formData.bid} 
+                onChange={handleChange} 
+                placeholder="Bid" 
+                required 
+            />
+
+            <input 
+                name="fund" 
+                type="number" 
+                value={formData.fund} 
+                onChange={handleChange} 
+                placeholder="Campaign fund" 
+                required 
+            />
+
+            <select 
+                name="status"
+                value={formData.status} 
+                onChange={handleChange} 
+                required 
+            >
+                <option value="">Select status</option>
                 <option value="on">On</option>
                 <option value="off">Off</option>
             </select>
-            <select name="town" value={formData.town} onChange={handleChange} required>
+
+            <select 
+                name="town" 
+                value={formData.town} 
+                onChange={handleChange} 
+                required
+            >
                 <option value="">Select town</option>
                 {towns.map((town) => (
                     <option key={town} value={town}>{town}</option>
                 ))}
             </select>
-            <input name="radius" type="number" value={formData.radius} onChange={handleChange} placeholder="Radius (km)" required/>
-            <button type="submit">Add campaign</button>
 
+            <input 
+                name="radius" 
+                type="number" 
+                value={formData.radius} 
+                onChange={handleChange} 
+                placeholder="Radius (km)" 
+                required
+            />
+            
+            <button type="submit">
+                {editingIndex === null ? 'Add campaign' : 'Update campaign'}
+            </button>
         </form>
     )
 }
