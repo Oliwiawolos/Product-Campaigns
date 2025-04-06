@@ -9,14 +9,14 @@ function App() {
   const [emeraldBalance, setEmeraldBalance] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/balance')
+    fetch('https://product-campaigns.onrender.com/balance')
       .then(res => res.json())
       .then(data => setEmeraldBalance(data))
       .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/campaigns')
+    fetch('https://product-campaigns.onrender.com/campaigns')
       .then(response => response.json())
       .then(data => setCampaigns(data))
       .catch(error => console.error(error));
@@ -30,7 +30,7 @@ function App() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/campaigns', {
+      const response = await fetch('https://product-campaigns.onrender.com/campaigns', {
         method : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(campaign)
@@ -52,7 +52,7 @@ function App() {
     const campaignToDelete = campaigns[index];
 
     try {
-      const response = await fetch(`http://localhost:5000/campaigns/${campaignToDelete.id}`, {
+      const response = await fetch(`https://product-campaigns.onrender.com/campaigns/${campaignToDelete.id}`, {
         method: 'DELETE'
       });
       if (!response.ok) {
@@ -90,7 +90,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/campaigns/${oldCampaign.id}`, {
+      const response = await fetch(`https://product-campaigns.onrender.com/campaigns/${oldCampaign.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(updatedCampaign)
