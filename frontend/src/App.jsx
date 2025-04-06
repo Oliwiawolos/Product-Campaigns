@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.scss'; 
 import CampaignForm from './components/CampaignForm';
 import CampaignList from './components/CampaignList';
@@ -8,27 +8,61 @@ function App() {
   const [emeraldBalance, setEmeraldBalance] = useState(1000); 
   const [editingIndex, setEditingIndex] = useState(null);
 
-  const addCampaign = (campaign) => {
+  useEffect(() => {
+    fetch('http://localhost:5000/campaigns')
+      .then(response => response.json())
+      .then(data => setCampaigns(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  const addCampaign = async (campaign) => {
     const fund = parseFloat(campaign.fund);
     if (fund > emeraldBalance) {
       alert('Insufficient funds');
       return false;
     }
-    setCampaigns([...campaigns, campaign]);
-    setEmeraldBalance(emeraldBalance - fund);
-    return true;
-  };
 
-  const deleteCampaign = (index) => {
-    const fundToReturn = parseFloat(campaigns[index].fund);
-    setEmeraldBalance(emeraldBalance + fundToReturn);
-    setCampaigns(campaigns.filter((_, i) => i !== index));
-    if (editingIndex === index){
-      setEditingIndex(null);
+    try {
+      const response = await fetch('http://localhost:5000/campaigns', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(campaign)
+      });
+      if (!response.ok) {
+        throw new Error('Error adding campaign');
+      }
+      const newCampaign = await response.json();
+      setCampaigns([...campaigns, newCampaign]);
+      setEmeraldBalance(emeraldBalance - fund);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
     }
   };
 
-  const updateCampaign = (updatedCampaign) => {
+  const deleteCampaign = async (index) => {
+    const campaignToDelete = campaigns[index];
+
+    try {
+      const response = await fetch(`http://localhost:5000/campaigns/${campaignToDelete.id}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Error deleting campaign');
+      }
+      const fundToReturn = parseFloat(campaigns[index].fund);
+      setEmeraldBalance(emeraldBalance + fundToReturn);
+      setCampaigns(campaigns.filter((_, i) => i !== index));
+      if (editingIndex === index){
+        setEditingIndex(null);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateCampaign = async (updatedCampaign) => {
     const oldCampaign = campaigns[editingIndex];
     const oldFund = parseFloat(oldCampaign.fund);
     const newFund = parseFloat(updatedCampaign.fund);
@@ -48,13 +82,26 @@ function App() {
       setEmeraldBalance(emeraldBalance + diff);
     }
 
-    const updatedCampaigns = [...campaigns];
-    updatedCampaigns[editingIndex] = updatedCampaign;
-    setCampaigns(updatedCampaigns);
-
-    setEditingIndex(null);
-    return true;
-  }
+    try {
+      const response = await fetch(`http://localhost:5000/campaigns/${oldCampaign.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(updatedCampaign)
+      });
+      if(!response.ok){
+        throw new Error('Error updating campaign');
+      }
+      const returnedCampaign = await response.json();
+      const updatedCampaigns = [...campaigns];
+      updatedCampaigns[editingIndex] = returnedCampaign;
+      setCampaigns(updatedCampaigns);
+      setEditingIndex(null);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 
   const editCampaign = (index) => {
     setEditingIndex(index);
