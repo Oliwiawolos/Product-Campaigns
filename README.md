@@ -14,15 +14,15 @@ Aplikacja do zarządzania kampaniami reklamowymi dla produktów. Umożliwia twor
 
 ## Technologie
 
-- **Frontend:** React, SCSS, `react-select`, `CreatableSelect`
+- **Frontend:** React, SCSS, `react-select`, `CreatableSelect`, `Vitest`
 - **Backend:** Python, Flask, Flask-CORS
 - **Trwałość danych:** `data.json`
 - **Hosting:** Netlify (frontend), Render (backend)
 
 ## Live demo
 
-- **Frontend (Netlify):** [https://product-campaigns.netlify.app/](https://product-campaigns.netlify.app/)
-- **Backend (Render):** [https://product-campaigns.onrender.com](https://product-campaigns.onrender.com)
+- **Najpierw otwórz backend (Render)**: [https://product-campaigns.onrender.com](https://product-campaigns.onrender.com)
+- **Potem uruchom frontend (Netlify):** [https://product-campaigns.netlify.app/](https://product-campaigns.netlify.app/)
 
 ## Jak uruchomić lokalnie?
 
