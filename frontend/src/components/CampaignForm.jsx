@@ -32,14 +32,14 @@ export default function CampaignForm({
         setFormData({...formData, [e.target.name]: e.target.value});
     };
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         let success;
         if (editingIndex === null){
-            success = onAdd(formData);
+            success = await onAdd(formData);
         } else {
-            success = onUpdate(formData);
+            success = await onUpdate(formData);
         }
         if (success){
             setFormData(defaultFormData);
