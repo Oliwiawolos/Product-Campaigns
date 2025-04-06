@@ -1,0 +1,22 @@
+campaigns = [
+    {
+        "id" : 1,
+        "name" : "Winter Sale",
+        "keywords" : ["Shoes", "Clothes"],
+        "bid" : 5,
+        "fund" : 200,
+        "status" : "On",
+        "town" : "Berlin",
+        "radius" : 10
+    },
+    {
+        "id" : 2,
+        "name" : "Books Sale",
+        "keywords" : ["Books", "Comics"],
+        "bid" : 2,
+        "fund" : 150,
+        "status" : "Off",
+        "town" : "Paris",
+        "radius" : 20
+    }
+]
