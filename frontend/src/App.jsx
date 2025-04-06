@@ -5,8 +5,15 @@ import CampaignList from './components/CampaignList';
 
 function App() {
   const [campaigns, setCampaigns] = useState([]);
-  const [emeraldBalance, setEmeraldBalance] = useState(1000); 
   const [editingIndex, setEditingIndex] = useState(null);
+  const [emeraldBalance, setEmeraldBalance] = useState(null);
+
+  useEffect(() => {
+    fetch('https://product-campaigns.onrender.com/balance')
+      .then(res => res.json())
+      .then(data => setEmeraldBalance(data))
+      .catch(err => console.error(err));
+  }, []);
 
   useEffect(() => {
     fetch('https://product-campaigns.onrender.com/campaigns')

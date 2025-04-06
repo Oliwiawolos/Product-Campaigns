@@ -1,3 +1,5 @@
+emerald_balance = 1000
+
 campaigns = [
     {
         "id" : 1,
