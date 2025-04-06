@@ -21,8 +21,8 @@ def save_data(data):
     with open(DATA_FILE, 'w') as f:
         json.dump(data, f, indent=2)
 
-@app.route("/is-alive")
-def is_alive():
+@app.route("/")
+def index():
     return "Hello from backend!"
 
 @app.route("/campaigns", methods=['GET'])
