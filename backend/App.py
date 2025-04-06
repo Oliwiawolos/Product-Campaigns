@@ -5,6 +5,10 @@ from Data import campaigns
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/")
+def home():
+    return "Hello from backend!"
+
 @app.route("/campaigns", methods=['GET'])
 def get_campaigns():
     return jsonify(campaigns)
