@@ -21,8 +21,8 @@ def save_data(data):
     with open(DATA_FILE, 'w') as f:
         json.dump(data, f, indent=2)
 
-@app.route("/")
-def home():
+@app.route("/is-alive")
+def is_alive():
     return "Hello from backend!"
 
 @app.route("/campaigns", methods=['GET'])
@@ -69,7 +69,6 @@ def delete_campaign(campaign_id):
     data["campaigns"] = [c for c in data["campaigns"] if c["id"] != campaign_id]
     save_data(data)
     return jsonify({"message": "Deleted"}), 204
-
 
 if __name__ == "__main__":
     app.run(debug=True)

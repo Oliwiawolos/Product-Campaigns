@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import './App.scss'; 
+import './ProductCampaigns.scss'; 
 import CampaignForm from './components/CampaignForm';
 import CampaignList from './components/CampaignList';
 
@@ -74,10 +74,10 @@ function App() {
     const oldFund = parseFloat(oldCampaign.fund);
     const newFund = parseFloat(updatedCampaign.fund);
     
-    if(newFund > oldFund){
+    if (newFund > oldFund){
       const diff = newFund - oldFund;
       // Jeśli kampania została zwiększona, sprawdź czy użytkownik ma środki
-      if(diff > emeraldBalance){
+      if (diff > emeraldBalance){
         alert('Insufficient funds for update');
         return false;
       } else {
@@ -95,7 +95,7 @@ function App() {
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(updatedCampaign)
       });
-      if(!response.ok){
+      if (!response.ok){
         throw new Error('Error updating campaign');
       }
       const returnedCampaign = await response.json();
