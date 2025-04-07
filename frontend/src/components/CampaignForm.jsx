@@ -35,21 +35,16 @@ export default function CampaignForm({
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log("=== handleSubmit START ===");
-let success;
-if (editingIndex === null){
-  console.log("=== calling onAdd(...) ===");
-  success = await onAdd(formData);
-} else {
-  success = await onUpdate(formData);
-}
-console.log("=== success?", success);
+        let success;
+        if (editingIndex === null){
+            success = await onAdd(formData);
+        } else {
+            success = await onUpdate(formData);
+        }
 
-if (success) {
-  console.log("=== resetting formData ===");
-  setFormData(defaultFormData);
-}
-
+        if (success) {
+            setFormData(defaultFormData);
+        }
     };
       
     const customStyles = {
